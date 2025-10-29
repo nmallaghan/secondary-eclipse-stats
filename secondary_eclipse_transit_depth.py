@@ -72,23 +72,6 @@ def secondary_eclipse_depth(Rp, Rs, T_p, T_s, a, Ag=0.0,
     return depth
 
 
-Rs = 1.1008*6.96e8        # stellar radius [m]
-R_disk = 0.00495575*1.496e11         # ~1.4 Rjup [m]
-inclination = 79.14927
-Rp = R_disk*np.sin(inclination)
-T_s = 3652.9742         # K
-T_p = 1660         # K (planet dayside)
-a = 2.77 * 1.496e11  # 0.05 AU in meters
-Ag = 0.0
-
-wavelengths = np.linspace(520e-9, 890e-9, 500)
-
-depth = secondary_eclipse_depth(Rp, Rs, T_p, T_s, a, Ag,
-                                wavelengths=wavelengths,
-                                response=None)
-print(f"Secondary eclipse depth: {depth:.2e} ({depth*1e6:.1f} ppm, {depth*100:.4f}%)")
-
-
 
 def eclipse_snr(depth_ppm, duration_min, sigma30_ppm=400, N_tel=1, N_ecl=1):
     """
@@ -127,15 +110,6 @@ def eclipse_snr(depth_ppm, duration_min, sigma30_ppm=400, N_tel=1, N_ecl=1):
     return snr_total, sigma_eclipse
 
 
-
-depth_ppm = depth       # eclipse depth 
-duration_min = 174    # eclipse duration in minutes
-sigma30_ppm = 400     # typical single NGTS telescope performance
-N_tel = 1             # number of telescopes
-N_ecl = 30             # number of eclipses
-
-snr, sigma_eclipse = eclipse_snr(depth_ppm, duration_min, sigma30_ppm, N_tel, N_ecl)
-print(f"Eclipse depth: {depth_ppm} ppm")
 print(f"Noise per eclipse: {sigma_eclipse:.1f} ppm")
 print(f"SNR (N_tel={N_tel}, N_ecl={N_ecl}): {snr:.2f}")
 
